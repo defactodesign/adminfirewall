@@ -1,0 +1,21 @@
+{
+  "name": "defacto/defacto_adminfirewall",
+  "license": "GPL-3.0",
+  "type": "magento-module",
+  "description": "IP Restriction modulel for Adminhtml area.",
+  "keywords": ["magento", "security"],
+  "homepage": "http://www.de-facto.com/",
+  "require": {
+    "php": ">=5.3"
+  },
+  "suggest":{
+    "magento-hackathon/magento-composer-installer": "*"
+  },
+  "authors": [
+    {
+      "name": "Mike Parkin",
+      "email": "mparkin@de-facto.com",
+      "role": "Author/Maintainer"
+    }
+  ]
+}

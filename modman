@@ -1,0 +1,3 @@
+src/app/code/community/Defacto/Adminfirewall               app/code/community/Defacto/Adminfirewall
+src/app/etc/modules/*                                      app/etc/modules/
+src/app/locale/en_US/template/email/defacto_adminfirewall  app/locale/en_US/template/email/defacto_adminfirewall

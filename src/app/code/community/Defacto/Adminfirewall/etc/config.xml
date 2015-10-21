@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Defacto_Adminfirewall>
+            <version>1.0.1</version>
+        </Defacto_Adminfirewall>
+    </modules>
+    <global>
+        <models>
+            <admin>
+                <rewrite>
+                    <observer>Defacto_Adminfirewall_Model_Admin_Observer</observer>
+                </rewrite>
+            </admin>
+        </models>
+        <helpers>
+            <defacto_adminfirewall>
+                <class>Defacto_Adminfirewall_Helper</class>
+            </defacto_adminfirewall>
+        </helpers>
+        <template>
+            <email>
+                <admin_defacto_adminfirewall_email_template translate="label" module="defacto_adminfirewall">
+                    <label>Admin Firewall Unauthorized Access</label>
+                    <file>defacto_adminfirewall/unauthorized.html</file>
+                    <type>html</type>
+                </admin_defacto_adminfirewall_email_template>
+            </email>
+        </template>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <defacto_admin_firewall translate="label" module="defacto_adminfirewall">
+                                            <title>Admin Firewall</title>
+                                        </defacto_admin_firewall>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+        <admin>
+            <defacto_adminfirewall>
+                <enabled>0</enabled>
+                <whitelist></whitelist>
+                <email_alerts>0</email_alerts>
+                <from_email_identity>general</from_email_identity>
+                <to_email_identity>support</to_email_identity>
+            </defacto_adminfirewall>
+        </admin>
+    </default>
+</config>

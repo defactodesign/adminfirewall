@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <admin>
+            <groups>
+                <defacto_adminfirewall translate="label" module="defacto_adminfirewall">
+                    <label>Admin Firewall</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>36</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <enabled translate="label" module="defacto_adminfirewall">
+                            <label>Enabled</label>
+                            <comment><![CDATA[Restrict Admin interface access]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </enabled>
+                        <whitelist translate="label" module="defacto_adminfirewall">
+                            <label>Allowed IP Addresses</label>
+                            <comment><![CDATA[Enter IP Addresses allowed to access the Admin interface, separate with carriage returns.]]></comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </whitelist>
+                        <email_alerts translate="label" module="defacto_adminfirewall">
+                            <label>Email Alerts</label>
+                            <comment><![CDATA[Send email alert on unauthorized access to Admin interface]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </email_alerts>
+                        <email_template translate="label" module="defacto_adminfirewall">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enabled>1</enabled>
+                                <email_alerts>1</email_alerts>
+                            </depends>
+                        </email_template>
+                        <to_email_identity translate="label" module="defacto_adminfirewall">
+                            <label>Email Recipient</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enabled>1</enabled>
+                                <email_alerts>1</email_alerts>
+                            </depends>
+                        </to_email_identity>
+                        <from_email_identity translate="label" module="defacto_adminfirewall">
+                            <label>Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <depends>
+                                <enabled>1</enabled>
+                                <email_alerts>1</email_alerts>
+                            </depends>
+                        </from_email_identity>
+                    </fields>
+                </defacto_adminfirewall>
+            </groups>
+        </admin>
+    </sections>
+</config>
