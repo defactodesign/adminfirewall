@@ -9,3 +9,5 @@ the frontname used. This means it will protect against modules that incorrectly
 add admin controllers without the administration prefix (Fixed in supee-6788).
 
 Pull requests welcome.
+
+developers@de-facto.com
