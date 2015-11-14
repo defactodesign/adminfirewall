@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Defacto_Adminfirewall>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </Defacto_Adminfirewall>
     </modules>
     <global>
@@ -53,6 +53,7 @@
         <admin>
             <defacto_adminfirewall>
                 <enabled>0</enabled>
+                <frontname_protection>1</frontname_protection>
                 <whitelist></whitelist>
                 <email_alerts>0</email_alerts>
                 <from_email_identity>general</from_email_identity>

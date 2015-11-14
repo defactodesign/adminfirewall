@@ -10,8 +10,8 @@
  */
 class Defacto_Adminfirewall_Model_Admin_Observer extends Mage_Admin_Model_Observer
 {
-    const XML_ADMIN_FIREWALL_EMAIL_TEMPLATE      = 'admin/defacto_adminfirewall/email_template';
-    const XML_ADMIN_FIREWALL_TO_EMAIL_IDENTITY   = 'admin/defacto_adminfirewall/to_email_identity';
+    const XML_ADMIN_FIREWALL_EMAIL_TEMPLATE = 'admin/defacto_adminfirewall/email_template';
+    const XML_ADMIN_FIREWALL_TO_EMAIL_IDENTITY = 'admin/defacto_adminfirewall/to_email_identity';
     const XML_ADMIN_FIREWALL_FROM_EMAIL_IDENTITY = 'admin/defacto_adminfirewall/from_email_identity';
 
     /**
@@ -24,31 +24,52 @@ class Defacto_Adminfirewall_Model_Admin_Observer extends Mage_Admin_Model_Observ
     {
         $helper = Mage::helper('defacto_adminfirewall');
 
+        if ($helper->isProtectFrontname()) {
+            if (!$helper->isCorrectFrontName() && !Mage::getSingleton('admin/session')->getUser()) {
+                $this->_refuseRequest($observer);
+
+                return;
+            }
+        }
+
         if ($helper->isAdminFirewallEnabled()) {
-
             $ip = Mage::helper('core/http')->getRemoteAddr();
+            if (!$helper->isAccessPermitted($ip)) {
+                $this->_refuseRequest($observer);
 
-            if (!$helper->isAccessPermitted($ip)){
+                return;
+            }
+        }
 
-                $observer->getEvent()
-                         ->getControllerAction()
-                         ->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+        return parent::actionPreDispatchAdmin($observer);
+    }
 
-                $requestInfo = new Varien_Object($helper->getRequestInfo());
+    /**
+     * Send any configured e-mail alerts then send a forbidden response.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    protected function _refuseRequest($observer)
+    {
+        $helper = Mage::helper('defacto_adminfirewall');
 
-                Mage::dispatchEvent('adminfirewall_connection_refused', array(
-                    'request_info' => $requestInfo
-                ));
+        $observer->getEvent()
+            ->getControllerAction()
+            ->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
 
-                if ($helper->isEmailAlertsEnabled()) {
-                    $this->sendEmailAlert($requestInfo->toArray());
-                }
+        $requestInfo = new Varien_Object($helper->getRequestInfo());
+        Mage::dispatchEvent('adminfirewall_connection_refused', array(
+            'request_info' => $requestInfo
+        ));
 
-                $response = Mage::app()->getResponse();
+        if ($helper->isEmailAlertsEnabled()) {
+            $this->sendEmailAlert($requestInfo->toArray());
+        }
 
-                if (!$response->getBody(true)) {
-                    $response->setHttpResponseCode(403);
-                    $response->setBody("<html>
+        $response = Mage::app()->getResponse();
+        if (!$response->getBody(true)) {
+            $response->setHttpResponseCode(403);
+            $response->setBody("<html>
                         <head>
                             <title>403 - Forbidden</title>
                         </head>
@@ -57,13 +78,7 @@ class Defacto_Adminfirewall_Model_Admin_Observer extends Mage_Admin_Model_Observ
                             <p>You do not have access to view this resource</p>
                         </body>
                     </html>");
-                }
-
-                return;
-            }
         }
-
-        return parent::actionPreDispatchAdmin($observer);
     }
 
     /**
@@ -74,7 +89,7 @@ class Defacto_Adminfirewall_Model_Admin_Observer extends Mage_Admin_Model_Observ
      */
     protected function sendEmailAlert(array $emailVariables)
     {
-        try{
+        try {
             $translate = Mage::getSingleton('core/translate');
             /* @var $translate Mage_Core_Model_Translate */
             $translate->setTranslateInline(false);
@@ -95,7 +110,7 @@ class Defacto_Adminfirewall_Model_Admin_Observer extends Mage_Admin_Model_Observ
             );
 
             $translate->setTranslateInline(true);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             Mage::log("Could not send administration firewall email alert", Zend_Log::WARN);
             Mage::log($e->getMessage(), Zend_Log::WARN);
         }

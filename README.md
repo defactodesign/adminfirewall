@@ -11,3 +11,10 @@ add admin controllers without the administration prefix (Fixed in supee-6788).
 Pull requests welcome.
 
 developers@de-facto.com
+
+## FAQs
+
+### Why do you extend the event observer rather than defining your own observer for the same event?
+It is imperative that the code in our event observer is processed before the default admin observer, otherwise
+it will not prevent brute force login attempts against non-default admin frontnames. Since Magento has no
+mechanism to control the order of event observers, rewritting the original observer is the cleanest option.
